@@ -2,7 +2,7 @@
 class Film{
 
     //Propriété private
-    private $id_;
+    private $id_ = null;
     private $titre_;
     private $resume_;
     private $lienImage_;
@@ -13,6 +13,22 @@ class Film{
         $this->titre_ = $titre;
         $this->resume_ = $resume;
         $this->lienImage_ = $lienImage;
+    }
+
+    //create si id est null et fait un update si id existe 
+    public function saveInBdd(){
+        //cas si id = null => INSERT
+        if(is_null($this->id_)){
+            $requetSQL = "INSERT INTO `Film`
+            ( `titre`, `resume`, `lienImage`) 
+            VALUES 
+            ('".$this->titre_."','".$this->resume_."','".$this->lienImage_."')";
+            $resultat = $GLOBALS["pdo"]->query($requetSQL); 
+            $this->id_ = $GLOBALS["pdo"]->lastInsertId();
+        }else{
+            //UPDATE
+
+        }
     }
     
     public function setFilmById($id){

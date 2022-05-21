@@ -9,8 +9,8 @@
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
     <script src='main.js'></script>
 </head>
-<body>
-    <?php include("session.php");
+<body
+    <?php include("./session.php");
 
     if(isset($_SESSION['Connexion'])){
     ?>

@@ -1,6 +1,6 @@
 ﻿<?php session_start(); 
-include("./classes/User.php");
-include("./classes/Film.php");
+include("classes/User.php");
+include("classes/Film.php");
 
 $TheUser = new User(null,null,null);
 
