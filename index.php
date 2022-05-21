@@ -9,6 +9,6 @@
     <script src='main.js'></script>
 </head>
 <body>
-    <?php echo "coucou je suis le tpNoteFilm"?>
+    <?php echo "coucou je suis le tpNoteFilm 2"?>
 </body>
 </html>
