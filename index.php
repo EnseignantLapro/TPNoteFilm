@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset='utf-8'>
@@ -9,6 +10,34 @@
     <script src='main.js'></script>
 </head>
 <body>
-    <?php echo "coucou je suis le tpNoteFilm 2"?>
+    <?php include("session.php");
+
+    if(isset($_SESSION['Connexion'])){
+    ?>
+        <h1> Index </h2>
+        <div> Bienvenu <?php echo $TheUser->getLogin()?></div>
+
+        <?php
+            if($TheUser->isAdmin()){
+                echo "vous etes admin";
+            }else{
+                echo "vous etes un simple visiteur";
+            }
+        ?>
+
+    <?php
+    }
+   
+    //affichage des films
+    $Film = new Film(null,null,null,null);
+    $tabFilms = $Film->getAllFilm();
+    echo "<ul>";
+    foreach ($tabFilms as $lefilm) {
+        $lefilm->renderHTML();
+    }
+    echo "</ul>";
+
+    ?>
+    
 </body>
 </html>
