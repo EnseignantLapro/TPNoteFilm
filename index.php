@@ -9,12 +9,12 @@
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
     <script src='main.js'></script>
 </head>
-<body
+<body>
     <?php include("./session.php");
 
     if(isset($_SESSION['Connexion'])){
     ?>
-        <h1> Index </h2>
+        <h1> Index </h1>
         <div> Bienvenu <?php echo $TheUser->getLogin()?></div>
 
         <?php

@@ -18,21 +18,56 @@ class Film{
     //create si id est null et fait un update si id existe 
     public function saveInBdd(){
         //cas si id = null => INSERT
+        $titre = addslashes($this->titre_);
+        $resume = addslashes($this->resume_);
+        $lienImage = addslashes($this->lienImage_);
+
         if(is_null($this->id_)){
             $requetSQL = "INSERT INTO `Film`
             ( `titre`, `resume`, `lienImage`) 
             VALUES 
-            ('".$this->titre_."','".$this->resume_."','".$this->lienImage_."')";
+            ('".$titre."','".$resume."','".$lienImage."')";
             $resultat = $GLOBALS["pdo"]->query($requetSQL); 
             $this->id_ = $GLOBALS["pdo"]->lastInsertId();
         }else{
             //UPDATE
+            echo "tu va updater le film id N°".$this->id_;
+
+            
+
+            $requetSQL = "UPDATE `Film` SET 
+            `titre`='".$titre."',
+            `resume`='".$resume."',
+            `lienImage`='".$lienImage."' 
+            WHERE `id` = '".$this->id_."'";
+            
+            $resultat = $GLOBALS["pdo"]->query($requetSQL); 
 
         }
     }
     
-    public function setFilmById($id){
+    public function deleteInBdd($idUser){
+        if(!is_null($this->id_)){
+            $requetSQL = "DELETE FROM `Film`WHERE
+            id = '". $this->id_."'";
+           $GLOBALS["pdo"]->query($requetSQL); 
+           echo "Le film ".$this->titre_." a été supprimé";
+        }
+    }
 
+    public function setFilmById($id){
+        $RequetSql = "SELECT * FROM `Film` 
+        WHERE `id` = '".$id."'  ";
+
+        $resultat = $GLOBALS["pdo"]->query($RequetSql); //resultat sera de type pdoStatement
+        if($resultat->rowCount()>0){
+            $tab=$resultat->fetch();
+            $this->id_ = $tab['id'];
+            $this->titre_ = $tab['titre'];
+            $this->resume_ = $tab['resume'];
+            $this->lienImage_ = $tab['lienImage'];  
+        }
+       
     }
 
     public function getAllFilm(){
@@ -52,6 +87,9 @@ class Film{
     public function getTitre(){
         return $this->titre_;
     }
+    public function getId(){
+        return $this->id_;
+    }
     public function getResume(){
         return $this->resume_;
     }
@@ -67,6 +105,20 @@ class Film{
     public function getImage(){
         $imageHTML = '<img src="'.$this->lienImage_.'"alt="'.$this->titre_.'"/>';
         return $imageHTML ;
+    }
+
+    public function getLienImage(){
+        return $this->lienImage_ ;
+    }
+
+    public function setTitre($titre){
+        $this->titre_ = $titre;
+    }
+    public function setResume($resume){
+        $this->resume_ = $resume;
+    }
+    public function setLienImage($lienImage){
+        $this->lienImage_ = $lienImage;
     }
 
 
