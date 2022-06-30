@@ -117,7 +117,7 @@ if (isset($_SESSION['Connexion'])) {
 
                 </ul>
                
-                <form class="form-inline my-2 my-lg-0" action="index.php">
+                <form class="form-inline my-2 my-lg-0 mr-1" action="index.php">
                     <button class="btn btn-outline-dark bg-light" type="submit">
                         <i class="bi bi-person-fill"></i>
                         <?php echo $TheUser->getLogin() ?>
@@ -135,7 +135,7 @@ if (isset($_SESSION['Connexion'])) {
             <div class="container px-4 px-lg-5 my-5">
                 <div class="text-center text-white">
                     <h1 class="display-4 fw-bolder">TP Note Film</h1>
-                    <p class=" lead fw-normal text-white-50 mb-0">TP de Première année</p>
+                    <p class=" lead fw-normal text-white mb-0">TP de Première année</p>
                 </div>
             </div>
         </div>

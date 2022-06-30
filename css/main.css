@@ -11,6 +11,12 @@ font-family: 'Numans', sans-serif;
 
 
 }
+.fondBlancRadial{
+    background-color: rgba(0, 0, 0, 0.4);
+    padding-block: 50px;
+    margin-top: -48px;
+    margin-bottom: -48px;
+}
 
 .container{
 height: 100%;
