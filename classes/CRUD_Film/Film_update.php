@@ -26,7 +26,7 @@
 </head>
 <body>
     <?php include("../../session.php");
-    $Film = new Film(null,null,null,null);
+    $Film = new Film(null,null,null,null,0);
     $tabFilms = $Film->getAllFilm();
 
     if(isset($_SESSION['Connexion'])){
@@ -67,7 +67,6 @@
                 ?>
                 </select>
             </form>
-            
 
             <form action="" method="Post" >
                 titre : <input type="text" name="titre" maxlength="100" value="<?=  $Film->getTitre() ?>" >
@@ -76,12 +75,6 @@
                 <input type="Hidden" name="id"  value="<?= $Film->getID()?>">
                 <input type="submit" name="UpdateFilm" value="Mettre à jour" >
             </form>
-
-
-
-
-
-
 
             <?php
             }else{
@@ -92,20 +85,26 @@
     <?php
     }
    
-    //affichage des films
-    
-    echo '<div class="container">
-    <section class="py-5">
-            <div class="container px-4 px-lg-5 mt-5">
-                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">';
-    foreach ($tabFilms as $lefilm) {
-        $lefilm->renderHTML();
-    }
-    echo "</div>
-    </div>
-</section></div>";
-
+    //affichage des film
     ?>
+        <div class="contener">
+            <section class="py-5">
+                <div class="container px-4 px-lg-5 mt-5">
+                    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                        <?php foreach ($tabFilms as $lefilm) {
+                            $lefilm->renderHTML();
+                        }
+                        ?></div>
+                </div>
+            </section>
+            <!-- Footer-->
+            <footer class="py-5 bg-dark">
+                <div class="container">
+                    <p class="m-0 text-center text-white">Copyright &copy; Rapidecho / Pour maitriser ce que vous faites inspirez vous mais ne faites pas de copier/coller</p>
+                </div>
+            </footer>
+            <!-- Bootstrap core JS-->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     
 </body>
 </html>

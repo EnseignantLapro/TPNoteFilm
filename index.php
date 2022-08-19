@@ -28,7 +28,7 @@
     
    
     //affichage des films
-    $Film = new Film(null,null,null,null);
+    $Film = new Film(null,null,null,null,0);
     $tabFilms = $Film->getAllFilm();
     ?>
      <!-- Section-->
@@ -43,6 +43,43 @@
                 </div>
             </div>
         </section>
+        <form class="form-inline my-2 my-lg-0 mr-1" action="index.php" method="post">
+                    <button name="mail" class="btn btn-outline-dark bg-light" type="submit">
+                        <i class="bi bi-envelope-fill"></i>
+                        <?php echo "envoi mail" ?>
+                    </button>
+                </form>
+        <?php
+        if (isset($_POST['mail'])) {
+            try {
+               // Plusieurs destinataires
+                $to  = 'julienlanglace@gmail.com'; // notez la virgule
+                // Sujet
+                $subject = 'Les News de votre site';
+                // message
+                $message = '<html><head><title>News Letter</title></head>
+                <body><p><h2>Voici les News!<h2></p><p><h3>Ca marche si je suis pas dans tes spams éé?<h3></p></body>
+                </html>';
+                // Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
+                $headers[] = 'MIME-Version: 1.0';
+                $headers[] = 'Content-type: text/html; charset=utf-8';
+                // En-têtes additionnels
+                $headers[] = 'To:  <'.$to.'>';
+                $headers[] = 'From: Site De Rapidecho <julien@Rapidecho.com>';
+                //copie 
+                //$headers[] = 'Cc: jlanglace@la-providence.net';
+                //copie caché
+                    //$headers[] = 'Bcc: jlanglace@la-providence.net';
+
+                // Envoi ( cette fonction est bloquante privilégié un appel API)
+                mail($to, $subject, $message, implode("\r\n", $headers));
+                echo "mail envoyé mais pas sur d' arriver";
+            } catch (Exception  $error) {
+                $error->getMessage();
+            }
+        }
+        
+        ?>
         <!-- Footer-->
         <footer class="py-5 bg-dark">
             <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Rapidecho / Pour maitriser ce que vous faites inspirez vous mais ne faites pas de copier/coller</p></div>
@@ -50,6 +87,6 @@
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
      
-    
+   
 </body>
 </html>

@@ -25,54 +25,37 @@
    
 </head>
 <body>
+    <div>
     <?php include("../../session.php");
-    $Film = new Film(null,null,null,null,0);
-
-    if(isset($_POST["DeleteFilm"])){
-        $Film->setFilmById($_POST["id"]);
-        $Film->deleteInBdd();
-    }
-
-    $tabFilms = $Film->getAllFilm();
-
+    
     if(isset($_SESSION['Connexion'])){
-    ?>
-        <h1> Index </h2>
-        <div> Bienvenu <?php echo $TheUser->getLogin()?></div>
-
-        <?php
+            $Film = new Film(null,null,null,null,0);
+            $tabFilms = $Film->getAllFilm();
             if($TheUser->isAdmin()){
-                echo "vous etes admin"; 
-                
                 if(isset($_POST["idFilm"])){
                     $Film->setFilmById($_POST["idFilm"]);
-                    $Film->renderHTML(); 
-                    ?>
-                    <form action="" method="Post" >
-                        <input type="Hidden" name="id"  value="<?= $Film->getID()?>">
-                        <input type="submit" name="DeleteFilm" value="Supprimer le Film <?= $Film->getTitre() ?>" >
-                    </form>
-                   <?php
                 }
 
-                /*if(isset($_POST["UpdateFilm"])){
-                    $Film->setFilmById($_POST["id"]); //id vient du champ hidden
-                    $Film->setTitre($_POST["titre"]);
-                    $Film->setResume($_POST["resume"]);
-                    $Film->setLienImage($_POST["lienImage"]);
-                    $Film->saveInBdd();
-                }*/
-                
+                if(isset($_POST["etoile"])){
+                    echo "la note est : ".$_POST["etoile"];
+                    $Note = new Note($_SESSION['id'],$_POST["idFilmNote"],$_POST["etoile"]);
+                    $Note->saveInBdd();
+                }
+            
+
+
                 
             ?>
             <form action="" method="Post" onchange="this.submit()">
                 <select id="idFilm" name="idFilm">
                     <option value="null" >Choisi un film</option>
                 <?php
+                    $afficheEtoile = false;
                     foreach ($tabFilms as  $TheFilm) {
 
                         if($Film->getId() == $TheFilm->getId()){
                             $selected = "selected";
+                            $afficheEtoile = true;
                         }else{$selected = "";}
 
                         echo '<option '.$selected.' value="'.$TheFilm->getId().'">'.$TheFilm->getTitre().'</option>';
@@ -81,7 +64,30 @@
                 </select>
             </form>
             
-            <?php
+                <?php if($afficheEtoile){
+                     $Film->renderHTML();
+                    ?>
+                    <form action="" method="Post"  class="stars5" onclick="this.submit();">
+                    
+                        <div class="starRating">
+                            <input id="s5" type="radio" name="etoile" value="5">
+                            <label for="s5">5</label>
+                            <input id="s4" type="radio" name="etoile" value="4">
+                            <label for="s4">4</label>
+                            <input id="s3" type="radio" name="etoile" value="3">
+                            <label for="s3">3</label>
+                            <input id="s2" type="radio" name="etoile" value="2">
+                            <label for="s2">2</label>
+                            <input id="s1" type="radio" name="etoile" value="1">
+                            <label for="s1">1</label>
+                        </div>
+                        <input type="hidden"  name="idFilmNote" value="<?= $Film->getId()?>" >
+
+                        
+                    </form>
+
+                    <?php
+                }
             }else{
                 echo "vous etes un simple visiteur vous n'avez pas acces au crud";
             }
@@ -90,10 +96,6 @@
     <?php
     }
    
-   
-    
-   
-
     ?>
     
 </body>

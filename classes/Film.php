@@ -7,14 +7,16 @@ class Film
     private $titre_;
     private $resume_;
     private $lienImage_;
+    private $MoyenneNote_;
 
     //Methode public
-    public function __construct($id, $titre, $resume, $lienImage)
+    public function __construct($id, $titre, $resume, $lienImage, $note)
     {
         $this->id_ = $id;
         $this->titre_ = $titre;
         $this->resume_ = $resume;
         $this->lienImage_ = $lienImage;
+        $this->MoyenneNote_ = $note;
     }
 
     //create si id est null et fait un update si id existe 
@@ -32,6 +34,13 @@ class Film
             ('" . $titre . "','" . $resume . "','" . $lienImage . "')";
             $resultat = $GLOBALS["pdo"]->query($requetSQL);
             $this->id_ = $GLOBALS["pdo"]->lastInsertId();
+
+            $requetSQL = "INSERT INTO `Note` ( `idUser`, `idFilm`, `note`) 
+            VALUES ( '".$_SESSION['id']."', '".$this->id_."', '".$this->MoyenneNote_."');";
+            $GLOBALS["pdo"]->query($requetSQL);
+
+
+
         } else {
             //UPDATE
             echo "tu va updater le film id N°" . $this->id_;
@@ -60,8 +69,15 @@ class Film
 
     public function setFilmById($id)
     {
-        $RequetSql = "SELECT * FROM `Film` 
-        WHERE `id` = '" . $id . "'  ";
+        $RequetSql = "Select Film.id,Film.titre,Film.resume,Film.lienImage, AVG(Note.note) as 'note'
+         FROM Film,Note,User
+        WHERE
+        Film.id = Note.idFilm
+        AND
+        Note.idUser = User.id
+        AND
+        Film.id = '" . $id . "'  
+        Group By Film.id;";
 
         $resultat = $GLOBALS["pdo"]->query($RequetSql); //resultat sera de type pdoStatement
         if ($resultat->rowCount() > 0) {
@@ -70,6 +86,7 @@ class Film
             $this->titre_ = $tab['titre'];
             $this->resume_ = $tab['resume'];
             $this->lienImage_ = $tab['lienImage'];
+            $this->MoyenneNote_ = $tab['note'];
         }
     }
 
@@ -77,11 +94,17 @@ class Film
     {
         $ListFilms = array();
         //chercher en bdd tous les films
-        $RequetSql = "SELECT * FROM `Film`";
+        $RequetSql = "Select Film.id,Film.titre,Film.resume,Film.lienImage, AVG(Note.note) as 'note'
+        FROM Film,Note,User
+        WHERE
+        Film.id = Note.idFilm
+        AND
+        Note.idUser = User.id
+        Group By Film.id;";
 
         $resultat = $GLOBALS["pdo"]->query($RequetSql); //resultat sera de type pdoStatement
         while ($tab = $resultat->fetch()) {
-            $lefilm = new Film($tab['id'], $tab['titre'], $tab['resume'], $tab['lienImage']);
+            $lefilm = new Film($tab['id'], $tab['titre'], $tab['resume'], $tab['lienImage'], $tab['note']);
             array_push($ListFilms, $lefilm);
         }
 
@@ -118,11 +141,16 @@ class Film
                         <h5 class="fw-bolder"><?= $this->titre_;?></h5>
                         <!-- Product reviews-->
                         <div class="d-flex justify-content-center small text-warning mb-2">
-                            <div class="bi-star-fill"></div>
-                            <div class="bi-star-fill"></div>
-                            <div class="bi-star-fill"></div>
-                            <div class="bi-star-fill"></div>
-                            <div class="bi-star-fill"></div>
+                            
+                            <?php
+                                for ($i=0; $i < round($this->MoyenneNote_); $i++) { 
+                                   echo'<div class="bi-star-fill"></div>';
+                                }
+                                for ($i=$i; $i < 5; $i++) { 
+                                    echo'<div class="bi-star"></div>';
+                                }
+                            ?>
+                            <?= round($this->MoyenneNote_)."/5" ?>
                         </div>
                         <!-- Product price-->
                         <span class="text-muted"><?= $this->resume_;?></span>
