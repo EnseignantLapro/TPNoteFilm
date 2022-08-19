@@ -57,7 +57,7 @@ if (isset($_SESSION['Connexion']) && $_SESSION['Connexion'] == true) {
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-user"></i></span>
                                 </div>
-                                <input required="required" type="text" class="form-control" placeholder="E-mail" name="login">
+                                <input required="le mail est obligatoire pour s'inscrire ou se connecter" type="text" class="form-control" placeholder="E-mail" name="login">
 
                             </div>
                             <div class="input-group form-group">
@@ -77,9 +77,10 @@ if (isset($_SESSION['Connexion']) && $_SESSION['Connexion'] == true) {
                     <div class="card-footer">
                         <?php
                         if (isset($_POST['Inscription']) && isset($_POST['login'])) {
+                            $TheUser->CreateNewUser($_POST['login'],$_POST['pass']);
                             ?>
                             <div class="d-flex justify-content-center links">
-                                Un mdp temporaire à été envoyé vérifié votre boite Mail.
+                                Un mot de passe temporaire à été envoyé dans votre boite Mail ;)
                             </div>
                             <?php
                         }else{
