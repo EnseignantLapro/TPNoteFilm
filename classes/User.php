@@ -46,6 +46,7 @@
             //etape 4 envoyer un mail de confirmation avec login et mdp
 
             //ETAPE 1 --------------------------
+            //vérifier que le login n'existe pas déjà
             $RequetSql = "SELECT * FROM `User` 
             WHERE 
             `login` = '".$login."'";
@@ -60,6 +61,7 @@
                 
             }else{
                 //ETAPE 2 --------------------------
+                //Générer un mdp temporaire pour ce user si $pass est vide
                 if(empty($pass)){
                     $temp= password_hash($login, PASSWORD_DEFAULT);
                     $pass=substr($temp, 13, 3).substr($temp, 23, 3).substr($temp, 33, 3).'!';
@@ -76,6 +78,7 @@
             }
 
             //ETAPE 4 --------------------------
+            //envoyer un mail de confirmation avec login et mdp
             try {
                 // Plusieurs destinataires
                  $to  = $this->login_; // notez la virgule
